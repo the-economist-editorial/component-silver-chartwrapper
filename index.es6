@@ -9,6 +9,7 @@ export default class SilverChartWrapper extends React.Component {
       duration: React.PropTypes.number,
       data: React.PropTypes.object,
       test: React.PropTypes.string,
+      getSvg: React.PropTypes.bool,
     };
   }
   // PROP TYPES ends
@@ -17,6 +18,7 @@ export default class SilverChartWrapper extends React.Component {
   static get defaultProps() {
     return {
       duration: 1000,
+      getSvg: false,
     };
   }
   // DEFAULT PROPS ends
@@ -55,6 +57,10 @@ export default class SilverChartWrapper extends React.Component {
   }
   // GET BOUNDS ends
 
+  catchSvg(svgString) {
+    console.log('Chartwrapper got ' + svgString + "... and remember to set the flag off again at the top");
+  }
+
 
   // RENDER
   // While I'm doing the sneaky trick with the counter,
@@ -66,16 +72,18 @@ export default class SilverChartWrapper extends React.Component {
     // D3 bounds are derived from the data.
     // *** this is actually a bit self-reflexive... reconsider...? ***
     config.bounds = this.getBounds(config.dimensions);
+    // SVG request:
+    const getSvg = this.props.getSvg;
     // Now: what style?
-    let childComponent = <SilverBarChart config={config}/>;
+    let childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={this.catchSvg.bind(this)}/>;
     switch (config.style) {
       case 'bars':
-        childComponent = <SilverBarChart config={config}/>;
+        childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={this.catchSvg.bind(this)}/>;
         break;
       // Other styles to come...
       // Default is redundant, but linting requires init'ion AND a default case!
       default:
-        childComponent = <SilverBarChart config={config}/>;
+        childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={this.catchSvg.bind(this)}/>;
         break;
     }
 
