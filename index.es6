@@ -10,39 +10,24 @@ export default class SilverChartWrapper extends React.Component {
       data: React.PropTypes.object,
       test: React.PropTypes.string,
       getSvg: React.PropTypes.bool,
+      passSvg: React.PropTypes.func,
     };
   }
   // PROP TYPES ends
 
   // DEFAULT PROPS
+  // *** DURATION must be set somewhere else and inherited... eventually ***
   static get defaultProps() {
     return {
       duration: 1000,
-      getSvg: false,
     };
   }
   // DEFAULT PROPS ends
 
-  // CONSTRUCTOR
-  //    bind handleResize to this component
-  //    set default state
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: props.data,
-    };
-  }
-  // CONSTRUCTOR ends
-
-  // COMPONENT DID MOUNT
-  componentDidMount() {
-  }
-  // COMPONENT DID MOUNT ends
-
   // GET BOUNDS
   // Calculates child component's d3 margins
   getBounds(dimensions) {
-    const margins = this.state.data.margins;
+    const margins = this.props.data.margins;
     // console.log(margins);
     const outerHeight = dimensions.height;
     const outerWidth = dimensions.width;
@@ -57,16 +42,9 @@ export default class SilverChartWrapper extends React.Component {
   }
   // GET BOUNDS ends
 
-  catchSvg(svgString) {
-    console.log('Chartwrapper got ' + svgString + "... and remember to set the flag off again at the top");
-  }
-
-
   // RENDER
-  // While I'm doing the sneaky trick with the counter,
-  // assemble the data object and throw it at the component
   render() {
-    const config = this.state.data;
+    const config = this.props.data;
     // For now, duration of d3 transitions (not that there are any!) is defined here
     config.duration = this.props.duration;
     // D3 bounds are derived from the data.
@@ -75,16 +53,15 @@ export default class SilverChartWrapper extends React.Component {
     // SVG request:
     const getSvg = this.props.getSvg;
     // Now: what style?
-    let childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={this.catchSvg.bind(this)}/>;
+    let childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={this.props.passSvg}/>;
     switch (config.style) {
       case 'bars':
-        childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={this.catchSvg.bind(this)}/>;
+        childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={this.props.passSvg}/>;
         break;
       // Other styles to come...
       // Default is redundant, but linting requires init'ion AND a default case!
       default:
-        childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={this.catchSvg.bind(this)}/>;
-        break;
+        childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={this.props.passSvg}/>;
     }
 
     // Embed whichever child component in the outer wrapper:
