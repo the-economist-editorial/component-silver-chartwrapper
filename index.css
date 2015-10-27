@@ -1,4 +1,5 @@
 @import '@economist/component-silver-barchart';
+@import '@economist/component-silver-chartmargins';
 
 
 /*  Chart outer wrapper. Width & height are currently

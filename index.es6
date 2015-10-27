@@ -1,5 +1,6 @@
 import React from 'react';
 import SilverBarChart from '@economist/component-silver-barchart';
+import SilverChartMargins from '@economist/component-silver-chartmargins';
 export default class SilverChartWrapper extends React.Component {
 
   // PROP TYPES
@@ -67,7 +68,10 @@ export default class SilverChartWrapper extends React.Component {
     // Embed whichever child component in the outer wrapper:
     return (
       <div className="d3-chart-outer-wrapper" style={config.dimensions}>
-        {childComponent}
+        <svg className="svg-wrapper" ref="svgwrapper">
+          {childComponent}
+          <SilverChartMargins/>
+        </svg>
       </div>
     );
   }
