@@ -6,9 +6,8 @@ export default class SilverChartWrapper extends React.Component {
   // PROP TYPES
   static get propTypes() {
     return {
-      dimensions: React.PropTypes.object,
       duration: React.PropTypes.number,
-      data: React.PropTypes.object,
+      config: React.PropTypes.object,
       test: React.PropTypes.string,
       getSvg: React.PropTypes.bool,
       passSvg: React.PropTypes.func,
@@ -20,15 +19,41 @@ export default class SilverChartWrapper extends React.Component {
   // *** DURATION must be set somewhere else and inherited... eventually ***
   static get defaultProps() {
     return {
+      config: {
+        strings: {
+          // (co-ords are text anchor -- bottom left/right)
+          title: { 'content': 'Title', 'x': 12, 'y': 15, 'class': 'silver-title-string' },
+          subtitle: { 'content': 'Subtitle', 'x': 12, 'y': 30, 'class': 'silver-subtitle-string' },
+          source: { 'content': 'Source', 'x': 12, 'y': -5, 'class': 'silver-source-string' },
+          footnote: { 'content': 'Footnote', 'x': -12, 'y': -5, 'class': 'silver-footnote-string' },
+        },
+        dimensions: { 'width': 160, 'height': 155 },
+        margins: { 'top': 40, 'right': 12, 'bottom': 40, 'left': 40 },
+      },
       duration: 1000,
+      getSvg: false,
     };
   }
   // DEFAULT PROPS ends
 
+  // COMPONENT WILL RECEIVE PROPS
+  // Invoked when new props are received AFTER initial render
+  componentWillReceiveProps(newProps) {
+    // Responds to request to get svg content
+    if (newProps.getSvg) {
+      // Gather up the SVG here...
+      const svgNode = React.findDOMNode(this.refs.svgwrapper);
+      const svgContent = svgNode.innerHTML;
+      this.props.passSvg(svgContent);
+      // And to pre-empt re-render:
+      return false;
+    }
+  }
+
   // GET BOUNDS
   // Calculates child component's d3 margins
   getBounds(dimensions) {
-    const margins = this.props.data.margins;
+    const margins = this.props.config.margins;
     // console.log(margins);
     const outerHeight = dimensions.height;
     const outerWidth = dimensions.width;
@@ -45,10 +70,10 @@ export default class SilverChartWrapper extends React.Component {
 
   // RENDER
   render() {
-    const config = this.props.data;
+    const config = this.props.config;
     // For now, duration of d3 transitions (not that there are any!) is defined here
     config.duration = this.props.duration;
-    // D3 bounds are derived from the data.
+    // D3 bounds are derived from config.
     // *** this is actually a bit self-reflexive... reconsider...? ***
     config.bounds = this.getBounds(config.dimensions);
     // SVG request:
@@ -65,12 +90,16 @@ export default class SilverChartWrapper extends React.Component {
         childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={this.props.passSvg}/>;
     }
 
-    // Embed whichever child component in the outer wrapper:
+
+    // ChartWrapper draws chart div and SVG wrapper, then inserts 2 components into the latter:
+    //    childComponent is the style-specific component
+    //    SilverChartMargins draws the strings in the outer box
+    //      (and is called second to appear in front)
     return (
       <div className="d3-chart-outer-wrapper" style={config.dimensions}>
         <svg className="svg-wrapper" ref="svgwrapper">
           {childComponent}
-          <SilverChartMargins/>
+          <SilverChartMargins config={config}/>
         </svg>
       </div>
     );
