@@ -1,6 +1,5 @@
 import React from 'react';
 import SilverBarChart from '@economist/component-silver-barchart';
-import SilverChartMargins from '@economist/component-silver-chartmargins';
 export default class SilverChartWrapper extends React.Component {
 
   // PROP TYPES
@@ -36,19 +35,7 @@ export default class SilverChartWrapper extends React.Component {
   }
   // DEFAULT PROPS ends
 
-  // COMPONENT WILL RECEIVE PROPS
-  // Invoked when new props are received AFTER initial render
-  componentWillReceiveProps(newProps) {
-    // Responds to request to get svg content
-    if (newProps.getSvg) {
-      // Gather up the SVG here...
-      const svgNode = React.findDOMNode(this.refs.svgwrapper);
-      const svgContent = svgNode.innerHTML;
-      this.props.passSvg(svgContent);
-      // And to pre-empt re-render:
-      return false;
-    }
-  }
+  // Deleted here
 
   // GET BOUNDS
   // Calculates child component's d3 margins
@@ -76,18 +63,19 @@ export default class SilverChartWrapper extends React.Component {
     // D3 bounds are derived from config.
     // *** this is actually a bit self-reflexive... reconsider...? ***
     config.bounds = this.getBounds(config.dimensions);
-    // SVG request:
+    // SVG request: flag and callback
     const getSvg = this.props.getSvg;
+    const passSvg = this.props.passSvg;
     // Now: what style?
-    let childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={this.props.passSvg}/>;
+    let childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={passSvg}/>;
     switch (config.style) {
       case 'bars':
-        childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={this.props.passSvg}/>;
+        childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={passSvg}/>;
         break;
       // Other styles to come...
       // Default is redundant, but linting requires init'ion AND a default case!
       default:
-        childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={this.props.passSvg}/>;
+        childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={passSvg}/>;
     }
 
 
@@ -97,10 +85,7 @@ export default class SilverChartWrapper extends React.Component {
     //      (and is called second to appear in front)
     return (
       <div className="d3-chart-outer-wrapper" style={config.dimensions}>
-        <svg className="svg-wrapper" ref="svgwrapper">
-          {childComponent}
-          <SilverChartMargins config={config}/>
-        </svg>
+        {childComponent}
       </div>
     );
   }
