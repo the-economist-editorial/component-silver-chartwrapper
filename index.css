@@ -1,13 +1,6 @@
 @import '@economist/component-silver-barchart';
-@import '@economist/component-silver-chartmargins';
 
-
-/*  Chart outer wrapper. Width & height are currently
-    set as inline styles, from 'dimensions' preference
-*/
-
+/*  Chart outer wrapper nestles round child SVG object */
 .d3-chart-outer-wrapper {
-  position: absolute;
-  top: 10px;
-  left: 10px;
+  display: inline-block;
 }

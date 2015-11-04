@@ -18,17 +18,17 @@ export default class SilverChartWrapper extends React.Component {
   // *** DURATION must be set somewhere else and inherited... eventually ***
   static get defaultProps() {
     return {
-      config: {
-        strings: {
-          // (co-ords are text anchor -- bottom left/right)
-          title: { 'content': 'Title', 'x': 12, 'y': 15, 'class': 'silver-title-string' },
-          subtitle: { 'content': 'Subtitle', 'x': 12, 'y': 30, 'class': 'silver-subtitle-string' },
-          source: { 'content': 'Source', 'x': 12, 'y': -5, 'class': 'silver-source-string' },
-          footnote: { 'content': 'Footnote', 'x': -12, 'y': -5, 'class': 'silver-footnote-string' },
-        },
-        dimensions: { 'width': 160, 'height': 155 },
-        margins: { 'top': 40, 'right': 12, 'bottom': 40, 'left': 40 },
-      },
+      // config: {
+      //   strings: {
+      //     // (co-ords are text anchor -- bottom left/right)
+      //     title: { 'content': 'Title', 'x': 12, 'y': 15, 'class': 'silver-title-string' },
+      //     subtitle: { 'content': 'Subtitle', 'x': 12, 'y': 30, 'class': 'silver-subtitle-string' },
+      //     source: { 'content': 'Source', 'x': 12, 'y': -5, 'class': 'silver-source-string' },
+      //     footnote: { 'content': 'Footnote', 'x': -12, 'y': -5, 'class': 'silver-footnote-string' },
+      //   },
+      //   dimensions: { 'width': 160, 'height': 155 },
+      //   margins: { 'top': 40, 'right': 12, 'bottom': 40, 'left': 40 },
+      // },
       duration: 1000,
       getSvg: false,
     };
@@ -58,7 +58,7 @@ export default class SilverChartWrapper extends React.Component {
   // RENDER
   render() {
     const config = this.props.config;
-    // For now, duration of d3 transitions (not that there are any!) is defined here
+    // For now, duration of d3 transitions is defined here
     config.duration = this.props.duration;
     // D3 bounds are derived from config.
     // *** this is actually a bit self-reflexive... reconsider...? ***
@@ -77,14 +77,13 @@ export default class SilverChartWrapper extends React.Component {
       default:
         childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={passSvg}/>;
     }
+    // const dimensions = config.dimensions;
+      // <div className="d3-chart-outer-wrapper" style={dimensions}>
 
 
-    // ChartWrapper draws chart div and SVG wrapper, then inserts 2 components into the latter:
-    //    childComponent is the style-specific component
-    //    SilverChartMargins draws the strings in the outer box
-    //      (and is called second to appear in front)
+    // ChartWrapper renders chart outer div and child style-specific component
     return (
-      <div className="d3-chart-outer-wrapper" style={config.dimensions}>
+      <div className="d3-chart-outer-wrapper">
         {childComponent}
       </div>
     );
