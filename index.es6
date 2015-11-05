@@ -18,17 +18,6 @@ export default class SilverChartWrapper extends React.Component {
   // *** DURATION must be set somewhere else and inherited... eventually ***
   static get defaultProps() {
     return {
-      // config: {
-      //   strings: {
-      //     // (co-ords are text anchor -- bottom left/right)
-      //     title: { 'content': 'Title', 'x': 12, 'y': 15, 'class': 'silver-title-string' },
-      //     subtitle: { 'content': 'Subtitle', 'x': 12, 'y': 30, 'class': 'silver-subtitle-string' },
-      //     source: { 'content': 'Source', 'x': 12, 'y': -5, 'class': 'silver-source-string' },
-      //     footnote: { 'content': 'Footnote', 'x': -12, 'y': -5, 'class': 'silver-footnote-string' },
-      //   },
-      //   dimensions: { 'width': 160, 'height': 155 },
-      //   margins: { 'top': 40, 'right': 12, 'bottom': 40, 'left': 40 },
-      // },
       duration: 1000,
       getSvg: false,
     };
@@ -57,7 +46,8 @@ export default class SilverChartWrapper extends React.Component {
 
   // RENDER
   render() {
-    const config = this.props.config;
+    // Clone config (ESLint errors this)
+    const config = { ...this.props.config };
     // For now, duration of d3 transitions is defined here
     config.duration = this.props.duration;
     // D3 bounds are derived from config.
@@ -66,22 +56,18 @@ export default class SilverChartWrapper extends React.Component {
     // SVG request: flag and callback
     const getSvg = this.props.getSvg;
     const passSvg = this.props.passSvg;
-    // Now: what style?
+    // Now: what style? Bar chart is default... for now at least...
     let childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={passSvg}/>;
     switch (config.style) {
       case 'bars':
         childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={passSvg}/>;
         break;
       // Other styles to come...
-      // Default is redundant, but linting requires init'ion AND a default case!
+      // Default is redundant, but linter insists upon init'ion AND a default case!
       default:
         childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={passSvg}/>;
     }
-    // const dimensions = config.dimensions;
-      // <div className="d3-chart-outer-wrapper" style={dimensions}>
-
-
-    // ChartWrapper renders chart outer div and child style-specific component
+    // Render chart outer div and child style-specific component
     return (
       <div className="d3-chart-outer-wrapper">
         {childComponent}
