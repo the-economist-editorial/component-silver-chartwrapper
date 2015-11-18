@@ -24,35 +24,38 @@ export default class SilverChartWrapper extends React.Component {
   }
   // DEFAULT PROPS ends
 
-  // Deleted here
-
-  // GET BOUNDS
-  // Calculates child component's d3 margins
-  getBounds(dimensions) {
-    const margins = this.props.config.margins;
-    // console.log(margins);
-    const outerHeight = dimensions.height;
-    const outerWidth = dimensions.width;
+  // GET INNER BOX
+  // Calculates child component's d3 margins. Param is config.dimensions,
+  // which currently has outerbox and margins nods. This function appends
+  // the innerbox node...
+  getInnerBox(dimensions) {
+    const margins = dimensions.margins;
+    const outerHeight = dimensions.outerbox.height;
+    const outerWidth = dimensions.outerbox.width;
     const innerWidth = outerWidth - margins.left - margins.right;
     const innerHeight = outerHeight - margins.top - margins.bottom;
     return {
-      'left': margins.left,
-      'top': margins.top,
       'width': innerWidth,
       'height': innerHeight,
     };
   }
-  // GET BOUNDS ends
+  // GET INNER BOX ends
 
   // RENDER
   render() {
     // Clone config (ESLint errors this)
     const config = { ...this.props.config };
-    // For now, duration of d3 transitions is defined here
+    console.log('ChartWrapper height: ' + config.dimensions.outerbox.height);
+    // NOTE For now, duration of d3 transitions is defined here
     config.duration = this.props.duration;
-    // D3 bounds are derived from config.
-    // *** this is actually a bit self-reflexive... reconsider...? ***
-    config.bounds = this.getBounds(config.dimensions);
+    // Append innerbox dimensions to config
+    config.dimensions.innerbox = this.getInnerBox(config.dimensions);
+    // And set string wrap widths:
+    // NOTE Currently hard-coded. Work into lookup...
+    config.strings.title.wrapwidth = config.dimensions.innerbox.width;
+    config.strings.subtitle.wrapwidth = config.dimensions.innerbox.width;
+    config.strings.source.wrapwidth = Math.floor(config.dimensions.innerbox.width * 0.45);
+    config.strings.footnote.wrapwidth = Math.floor(config.dimensions.innerbox.width * 0.45);
     // SVG request: flag and callback
     const getSvg = this.props.getSvg;
     const passSvg = this.props.passSvg;
