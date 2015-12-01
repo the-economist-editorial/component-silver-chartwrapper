@@ -43,9 +43,8 @@ export default class SilverChartWrapper extends React.Component {
 
   // RENDER
   render() {
-    // Clone config (ESLint errors this)
+    // Clone config (ESLint errors on this)
     const config = { ...this.props.config };
-    //  console.log('ChartWrapper height: ' + config.dimensions.outerbox.height);
     // NOTE For now, duration of d3 transitions is defined here
     config.duration = this.props.duration;
     // Append innerbox dimensions to config
