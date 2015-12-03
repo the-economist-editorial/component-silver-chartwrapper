@@ -3,4 +3,13 @@
 /*  Chart outer wrapper nestles round child SVG object */
 .d3-chart-outer-wrapper {
   display: inline-block;
+  -moz-transition: width .5s, height .5s;
+  -o-transition: width .5s, height .5s;
+  -webkit-transition: width .5s, height .5s;
+  transition: width .5s, height .5s;
+}
+
+.svg-wrapper {
+  width: 100%;
+  height: 100%;
 }

@@ -69,9 +69,24 @@ export default class SilverChartWrapper extends React.Component {
       default:
         childComponent = <SilverBarChart config={config} getSvg={getSvg} passSvg={passSvg}/>;
     }
-    // Render chart outer div and child style-specific component
+    // Render chart outer div (and child style-specific component
+
+    // NOTE:
+    // This element has hard-set size. Child svg-wrapper is 100%...
+    // But the thing is: dimensions set here by the config object
+    // should stop here. Elements down the tree should take their dimensions
+    // from this element...
+    // Or: can I get SilverBullet's 'live' equivalent to override
+    // its config file's dims with window dims...?
+    const divStyle = {
+      height: config.dimensions.outerbox.height,
+      width: config.dimensions.outerbox.width
+    }
+
     return (
-      <div className="d3-chart-outer-wrapper">
+      <div className="d3-chart-outer-wrapper"
+        style={divStyle}
+      >
         {childComponent}
       </div>
     );
