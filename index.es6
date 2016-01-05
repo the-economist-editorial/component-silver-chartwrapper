@@ -78,6 +78,7 @@ export default class SilverChartWrapper extends React.Component {
     // from this element...
     // Or: can I get SilverBullet's 'live' equivalent to override
     // its config file's dims with window dims...?
+    // Careful: probably no 'live' equivalent, anyway...
     const divStyle = {
       height: config.dimensions.outerbox.height,
       width: config.dimensions.outerbox.width
