@@ -81,9 +81,8 @@ export default class SilverChartWrapper extends React.Component {
     // Careful: probably no 'live' equivalent, anyway...
     const divStyle = {
       height: config.dimensions.outerbox.height,
-      width: config.dimensions.outerbox.width
-    }
-
+      width: config.dimensions.outerbox.width,
+    };
     return (
       <div className="d3-chart-outer-wrapper"
         style={divStyle}
