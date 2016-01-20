@@ -5,7 +5,7 @@ export default class SilverChartWrapper extends React.Component {
   // PROP TYPES
   static get propTypes() {
     return {
-      duration: React.PropTypes.number,
+      duration: React.PropTypes.array,
       config: React.PropTypes.object,
       test: React.PropTypes.string,
       getSvg: React.PropTypes.bool,
@@ -15,10 +15,10 @@ export default class SilverChartWrapper extends React.Component {
   // PROP TYPES ends
 
   // DEFAULT PROPS
-  // *** DURATION must be set somewhere else and inherited... eventually ***
   static get defaultProps() {
     return {
-      duration: 1000,
+      // Duration hard-coded here: values for initial display (enter) and subsequent updates
+      duration: [0, 500],
       getSvg: false,
     };
   }
@@ -45,7 +45,7 @@ export default class SilverChartWrapper extends React.Component {
   render() {
     // Clone config (ESLint errors on this)
     const config = { ...this.props.config };
-    // NOTE For now, duration of d3 transitions is defined here
+    // Append duration (array) to the config object
     config.duration = this.props.duration;
     // Append innerbox dimensions to config
     config.dimensions.innerbox = this.getInnerBox(config.dimensions);
