@@ -1,0 +1,17 @@
+/* @import '@economist/component-silver-barchart'; */
+
+/*  Chart outer wrapper nestles round child SVG object */
+
+.silver-chartwrapper {
+  display: inline-block;
+  transform: scale(1.3) translateX(11.8%);
+  transition: width 0.5s, height 0.5s;
+  /* Show larger than life... */
+  /* For Chrome and Safari */
+  zoom: 135%;
+}
+
+.svg-wrapper {
+  width: 100%;
+  height: 100%;
+}
