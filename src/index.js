@@ -54,7 +54,7 @@ export default class SilverChartWrapper extends React.Component {
   render() {
     const config = this.props.config;
     /* eslint-disable no-console */
-    console.log('Check state of config object in Chartwrapper.render');
+    console.log('Verify state of config object in Chartwrapper.render');
     console.log(config);
     /* eslint-enable no-console */
     // Append innerbox dimensions to config
@@ -101,9 +101,8 @@ export default class SilverChartWrapper extends React.Component {
       width: config.background.outerbox.dimensions.width,
     };
     return (
-      <div className="silver-chartwrapper"
-        style={divStyle}
-      >
+      <div className="silver-chartwrapper" style={divStyle} >
+        <svg className="svg-wrapper" ref="svgwrapper" />
       </div>
     );
   }
