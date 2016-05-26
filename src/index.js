@@ -1,5 +1,6 @@
 // Chartwrapper is now the immediate child of Sibyl
 import React from 'react';
+import SilverChartMargins from '@economist/component-silver-chartmargins';
 // import SilverBarChart from '@economist/component-silver-barchart';
 export default class SilverChartWrapper extends React.Component {
 
@@ -102,7 +103,9 @@ export default class SilverChartWrapper extends React.Component {
     };
     return (
       <div className="silver-chartwrapper" style={divStyle} >
-        <svg className="svg-wrapper" ref="svgwrapper" />
+        <svg className="svg-wrapper" ref="svgwrapper" >
+          <SilverChartMargins config={config}/>
+        </svg>
       </div>
     );
   }
