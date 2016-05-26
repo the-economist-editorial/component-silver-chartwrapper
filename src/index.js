@@ -104,7 +104,7 @@ export default class SilverChartWrapper extends React.Component {
     return (
       <div className="silver-chartwrapper" style={divStyle} >
         <svg className="svg-wrapper" ref="svgwrapper" >
-          <SilverChartMargins config={config}/>
+          < SilverChartMargins config={config} />
         </svg>
       </div>
     );
